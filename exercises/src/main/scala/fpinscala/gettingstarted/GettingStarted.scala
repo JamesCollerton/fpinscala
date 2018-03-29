@@ -1,4 +1,4 @@
-package fpinscala.gettingstarted
+//package fpinscala.gettingstarted
 
 // A comment!
 /* Another comment */
@@ -14,7 +14,8 @@ object MyModule {
   }
 
   def main(args: Array[String]): Unit = {
-    println(formatAbs(-42))
+    	println(formatAbs(-42))
+	List(0, 1, 2, 3, 4, 5).foreach(x => println(fib(x)))
   }
 
   // A definition of factorial, using a local, tail recursive function
@@ -39,12 +40,11 @@ object MyModule {
 
   def fib(n: Int): Int = {
 	@annotation.tailrec
-	def go(n: Int, acc: Int) : Int = {
-		if(n == 0) acc
-		else if(n == 1) 1
-		else go(n - 1) + go(n - 2)
+	def go(n: Int, twoBeh: Int, oneBeh: Int) : Int = {
+		if(n == 0) twoBeh
+		else go(n - 1, oneBeh, oneBeh + twoBeh)
 	}
-	go(
+	go(n, 0, 1)
   }
 
   // This definition and `formatAbs` are very similar..
