@@ -147,9 +147,29 @@ object PolymorphicFunctions {
     go(0, 0, as.length - 1)
   }
 
-  // Exercise 2: Implement a polymorphic function to check whether
-  // an `Array[A]` is sorted
-  def isSorted[A](as: Array[A], gt: (A,A) => Boolean): Boolean = ???
+	def main(args: Array[String]): Unit = {
+		testingIsSorted()
+	}
+
+	def testingIsSorted() = {
+		List(
+			Array(1, 2, 3),
+			Array(3, 2, 1),
+			Array(1, 2, 1),
+			Array(1, 1, 1)
+			
+		).map(
+			x => isSorted(x, (a: Int, b: Int) => a > b)
+		).foreach(println)
+	}
+
+	// Exercise 2: Implement a polymorphic function to check whether
+	// an `Array[A]` is sorted
+	def isSorted[A](as: Array[A], gt: (A,A) => Boolean): Boolean = as match {
+		case Array() => true
+		case arr if arr.tail.isEmpty => true
+		case arr if arr.tail.nonEmpty => gt(arr.head, arr.tail.head) && isSorted(arr.tail, gt)
+	}
 
   // Polymorphic functions are often so constrained by their type
   // that they only have one implementation! Here's an example:
