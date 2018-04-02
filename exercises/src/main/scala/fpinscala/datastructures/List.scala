@@ -1,4 +1,4 @@
-package fpinscala.datastructures
+//package fpinscala.datastructures
 
 sealed trait List[+A] // `List` data type, parameterized on a type, `A`
 case object Nil extends List[Nothing] // A `List` data constructor representing the empty list
@@ -50,15 +50,30 @@ object List { // `List` companion object. Contains functions for creating and wo
     foldRight(ns, 1.0)(_ * _) // `_ * _` is more concise notation for `(x,y) => x * y`; see sidebar
 
 
-  def tail[A](l: List[A]): List[A] = ???
+  	def tail[A](l: List[A]): List[A] = l match {
+		case Nil => Nil
+		case Cons(h, t) => t
+	}
 
-  def setHead[A](l: List[A], h: A): List[A] = ???
+  	def setHead[A](l: List[A], h: A): List[A] = l match {
+		case Nil => Cons(h, Nil)
+		case Cons(lh, lt) => Cons(h, lt) 
+	}
 
-  def drop[A](l: List[A], n: Int): List[A] = ???
+  	def drop[A](l: List[A], n: Int): List[A] = l match {
+		case Nil => Nil
+		case Cons(h, t) if n == 0 => l
+		case Cons(h, t) => drop(t, n - 1)
+	}
 
-  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = ???
+  	def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
+		case Nil => Nil
+		case Cons(h, t) => if(f(h)) dropWhile(t, f) else l
+	}
 
-  def init[A](l: List[A]): List[A] = ???
+  	def init[A](l: List[A]): List[A] = l match {
+		case Cons(h, t) => 
+	}
 
   def length[A](l: List[A]): Int = ???
 
