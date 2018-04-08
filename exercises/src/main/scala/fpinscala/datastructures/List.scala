@@ -111,5 +111,25 @@ object List { // `List` companion object. Contains functions for creating and wo
 		foldRight(l, List[A]())((innerList, accList) => append(accList, innerList))
 	}
 
-  def map[A,B](l: List[A])(f: A => B): List[B] = ???
+	def addOne(l: List[Int]): List[Int] = l match {
+		case Nil => Nil
+		case Cons(x, xs) => Cons(x + 1, addOne(xs))
+	}
+
+	def addOneFold(l: List[Int]): List[Int] = {
+		foldRight(l, List[Int]())((h, t) => Cons(h + 1, t))
+	}
+
+	def doubleToString(l: List[Double]): List[String] = {
+		foldRight(l, List[String]())((h, t) => Cons(h.toString(), t))
+	}
+
+  	def map[A,B](l: List[A])(f: A => B): List[B] = {
+		foldRight(l, List[B]())((h, t) => Cons(f(h), t))
+	}
+
+	def filter[A](as: List[A])(f: A => Boolean): List[A] = {
+		foldRight(as, List[A]())((h, t) => if(f(h)) Cons(h, t) else t)
+	}
+
 }
