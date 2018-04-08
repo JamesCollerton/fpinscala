@@ -132,4 +132,24 @@ object List { // `List` companion object. Contains functions for creating and wo
 		foldRight(as, List[A]())((h, t) => if(f(h)) Cons(h, t) else t)
 	}
 
+	def flatMap[A,B](as: List[A])(f: A => List[B]): List[B] = {
+		foldRight(as, List[B]())((h, t) => append(f(h), t))
+	}
+	
+	def flatMapFilter[A](as: List[A])(f: A => Boolean): List[A] = {
+		flatMap(as)(x => if(f(x)) List(x) else List())
+	}
+
+	def sumTwoLists(l: List[Int], r: List[Int]): List[Int] = (l, r) match {
+		case (_, Nil) => Nil
+		case (Nil, _) => Nil
+		case (Cons(h1, t1), Cons(h2, t2)) => Cons(h1 + h2, sumTwoLists(t1, t2))
+	}
+	
+	def zipWith[A, B, C](l: List[A], r: List[B])(f: (A, B) => C): List[C] = (l, r) match {
+		case (_, Nil) => Nil
+		case (Nil, _) => Nil
+		case (Cons(h1, t1), Cons(h2, t2)) => Cons(f(h1, h2), zipWith(t1, t2)(f))
+	}
+
 }
