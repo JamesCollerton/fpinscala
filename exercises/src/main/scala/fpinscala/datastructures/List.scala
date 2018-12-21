@@ -1,4 +1,4 @@
-//package fpinscala.datastructures
+package fpinscala.datastructures
 
 sealed trait List[+A] // `List` data type, parameterized on a type, `A`
 case object Nil extends List[Nothing] // A `List` data constructor representing the empty list
