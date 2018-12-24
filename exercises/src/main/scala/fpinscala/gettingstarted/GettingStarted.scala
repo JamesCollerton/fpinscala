@@ -1,4 +1,4 @@
-//package fpinscala.gettingstarted
+package fpinscala.gettingstarted
 
 // A comment!
 /* Another comment */
@@ -13,10 +13,8 @@ object MyModule {
     msg.format(x, abs(x))
   }
 
-  def main(args: Array[String]): Unit = {
-    	println(formatAbs(-42))
-	List(0, 1, 2, 3, 4, 5).foreach(x => println(fib(x)))
-  }
+  def main(args: Array[String]): Unit =
+    println(formatAbs(-42))
 
   // A definition of factorial, using a local, tail recursive function
   def factorial(n: Int): Int = {
@@ -38,14 +36,7 @@ object MyModule {
 
   // Exercise 1: Write a function to compute the nth fibonacci number
 
-  def fib(n: Int): Int = {
-	@annotation.tailrec
-	def go(n: Int, twoBeh: Int, oneBeh: Int) : Int = {
-		if(n == 0) twoBeh
-		else go(n - 1, oneBeh, oneBeh + twoBeh)
-	}
-	go(n, 0, 1)
-  }
+  def fib(n: Int): Int = ???
 
   // This definition and `formatAbs` are very similar..
   private def formatFactorial(n: Int) = {
@@ -147,29 +138,9 @@ object PolymorphicFunctions {
     go(0, 0, as.length - 1)
   }
 
-	def main(args: Array[String]): Unit = {
-		//testingIsSorted()
-	}
-
-	def testingIsSorted() = {
-		List(
-			Array(1, 2, 3),
-			Array(3, 2, 1),
-			Array(1, 2, 1),
-			Array(1, 1, 1)
-			
-		).map(
-			x => isSorted(x, (a: Int, b: Int) => a > b)
-		).foreach(println)
-	}
-
-	// Exercise 2: Implement a polymorphic function to check whether
-	// an `Array[A]` is sorted
-	def isSorted[A](as: Array[A], gt: (A,A) => Boolean): Boolean = as match {
-		case Array() => true
-		case arr if arr.tail.isEmpty => true
-		case arr if arr.tail.nonEmpty => gt(arr.head, arr.tail.head) && isSorted(arr.tail, gt)
-	}
+  // Exercise 2: Implement a polymorphic function to check whether
+  // an `Array[A]` is sorted
+  def isSorted[A](as: Array[A], gt: (A,A) => Boolean): Boolean = ???
 
   // Polymorphic functions are often so constrained by their type
   // that they only have one implementation! Here's an example:
@@ -177,31 +148,31 @@ object PolymorphicFunctions {
   def partial1[A,B,C](a: A, f: (A,B) => C): B => C =
     (b: B) => f(a, b)
 
-  	// Exercise 3: Implement `curry`.
+  // Exercise 3: Implement `curry`.
 
-	// Note that `=>` associates to the right, so we could
-	// write the return type as `A => B => C`
-	def curry[A,B,C](f: (A, B) => C): A => (B => C) =
-		(a: A) => ((b: B) => f(a, b))		
-	
-	// NB: The `Function2` trait has a `curried` method already
-	
-	// Exercise 4: Implement `uncurry`
-	def uncurry[A,B,C](f: A => B => C): (A, B) => C =
-	    (a: A, b: B) => f(a)(b)
-	
-	/*
-	  NB: There is a method on the `Function` object in the standard library,
-	  `Function.uncurried` that you can use for uncurrying.
-	
-	  Note that we can go back and forth between the two forms. We can curry
-	  and uncurry and the two forms are in some sense "the same". In FP jargon,
-	  we say that they are _isomorphic_ ("iso" = same; "morphe" = shape, form),
-	  a term we inherit from category theory.
-	*/
+  // Note that `=>` associates to the right, so we could
+  // write the return type as `A => B => C`
+  def curry[A,B,C](f: (A, B) => C): A => (B => C) =
+    ???
+
+  // NB: The `Function2` trait has a `curried` method already
+
+  // Exercise 4: Implement `uncurry`
+  def uncurry[A,B,C](f: A => B => C): (A, B) => C =
+    ???
+
+  /*
+  NB: There is a method on the `Function` object in the standard library,
+  `Function.uncurried` that you can use for uncurrying.
+
+  Note that we can go back and forth between the two forms. We can curry
+  and uncurry and the two forms are in some sense "the same". In FP jargon,
+  we say that they are _isomorphic_ ("iso" = same; "morphe" = shape, form),
+  a term we inherit from category theory.
+  */
 
   // Exercise 5: Implement `compose`
 
-  	def compose[A,B,C](f: B => C, g: A => B): A => C =
-		a => f(g(a))
+  def compose[A,B,C](f: B => C, g: A => B): A => C =
+    ???
 }

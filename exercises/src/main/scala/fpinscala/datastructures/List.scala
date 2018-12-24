@@ -50,106 +50,19 @@ object List { // `List` companion object. Contains functions for creating and wo
     foldRight(ns, 1.0)(_ * _) // `_ * _` is more concise notation for `(x,y) => x * y`; see sidebar
 
 
-  	def tail[A](l: List[A]): List[A] = l match {
-		case Nil => Nil
-		case Cons(h, t) => t
-	}
+  def tail[A](l: List[A]): List[A] = ???
 
-  	def setHead[A](l: List[A], h: A): List[A] = l match {
-		case Nil => Cons(h, Nil)
-		case Cons(lh, lt) => Cons(h, lt) 
-	}
+  def setHead[A](l: List[A], h: A): List[A] = ???
 
-  	def drop[A](l: List[A], n: Int): List[A] = l match {
-		case Nil => Nil
-		case Cons(h, t) if n == 0 => l
-		case Cons(h, t) => drop(t, n - 1)
-	}
+  def drop[A](l: List[A], n: Int): List[A] = ???
 
-  	def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
-		case Nil => Nil
-		case Cons(h, t) => if(f(h)) dropWhile(t, f) else l
-	}
+  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = ???
 
-  	def init[A](l: List[A]): List[A] = l match {
-		case Nil => Nil
-		case Cons(h, Nil) => Nil
-		case Cons(h, t) => Cons(h, init(t))
-	}
+  def init[A](l: List[A]): List[A] = ???
 
-  	def length[A](l: List[A]): Int = {
-		foldRight(l, 0)((a, b) => b + 1)
-	}
+  def length[A](l: List[A]): Int = ???
 
-	@annotation.tailrec
-  	def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = l match {
-		case Nil => z
-		case Cons(x, xs) => foldLeft(xs, f(z, x))(f)
-	}
+  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = ???
 
-	def sumFoldLeft(l: List[Double]): Double = {
-		foldLeft(l, 0.0)((x, y) => x + y)
-	}
-
-	def productFoldLeft(l: List[Double]): Double = {
-		foldLeft(l, 1.0)((x, y) => x * y)
-	}
-
-	def lengthFoldLeft[A](l: List[A]): Int = {
-		foldLeft(l, 0)((acc, _) => acc + 1)
-	} 
-
-	def reverse[A](l: List[A]): List[A] = {
-		foldLeft(l, List[A]())((li, it) => Cons(it, li))
-	}
-	
-	def appendNew[A](l: List[A], r: List[A]): List[A] = {
-		foldRight(l, r)((item, list) => Cons(item, list))
-	}
-
-      	def concat[A](l: List[List[A]]): List[A] = {
-		foldRight(l, List[A]())((innerList, accList) => append(accList, innerList))
-	}
-
-	def addOne(l: List[Int]): List[Int] = l match {
-		case Nil => Nil
-		case Cons(x, xs) => Cons(x + 1, addOne(xs))
-	}
-
-	def addOneFold(l: List[Int]): List[Int] = {
-		foldRight(l, List[Int]())((h, t) => Cons(h + 1, t))
-	}
-
-	def doubleToString(l: List[Double]): List[String] = {
-		foldRight(l, List[String]())((h, t) => Cons(h.toString(), t))
-	}
-
-  	def map[A,B](l: List[A])(f: A => B): List[B] = {
-		foldRight(l, List[B]())((h, t) => Cons(f(h), t))
-	}
-
-	def filter[A](as: List[A])(f: A => Boolean): List[A] = {
-		foldRight(as, List[A]())((h, t) => if(f(h)) Cons(h, t) else t)
-	}
-
-	def flatMap[A,B](as: List[A])(f: A => List[B]): List[B] = {
-		foldRight(as, List[B]())((h, t) => append(f(h), t))
-	}
-	
-	def flatMapFilter[A](as: List[A])(f: A => Boolean): List[A] = {
-		flatMap(as)(x => if(f(x)) List(x) else List())
-	}
-
-	def sumTwoLists(l: List[Int], r: List[Int]): List[Int] = (l, r) match {
-		case (_, Nil) => Nil
-		case (Nil, _) => Nil
-		case (Cons(h1, t1), Cons(h2, t2)) => Cons(h1 + h2, sumTwoLists(t1, t2))
-	}
-	
-	def zipWith[A, B, C](l: List[A], r: List[B])(f: (A, B) => C): List[C] = (l, r) match {
-		case (_, Nil) => Nil
-		case (Nil, _) => Nil
-		case (Cons(h1, t1), Cons(h2, t2)) => Cons(f(h1, h2), zipWith(t1, t2)(f))
-	}
-
+  def map[A,B](l: List[A])(f: A => B): List[B] = ???
 }
