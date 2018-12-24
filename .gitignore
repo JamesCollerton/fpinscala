@@ -10,3 +10,8 @@ project.vim
 .project
 .classpath
 .metadata/
+ .idea/
+ *.iml
+ *.class
+ target/scala-2.11/api/
+ ivy-report.xsl
