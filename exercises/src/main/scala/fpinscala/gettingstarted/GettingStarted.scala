@@ -15,7 +15,7 @@ object MyModule {
 
   def main(args: Array[String]): Unit = {
     println(formatAbs(-42))
-    println("Fibonacci of 5 " + fib(5))
+    println(formatResult("fibonacci sum", 5, fib))
   }
 
 
