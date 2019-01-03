@@ -127,6 +127,16 @@ object MonomorphicBinarySearch {
 
 object PolymorphicFunctions {
 
+  def main(args: Array[String]): Unit = {
+    val isSortedGreaterThan = isSorted[Int](_: Array[Int], (x, y) => x < y)
+    println(formatResult("is sorted", Array(1, 2, 3), isSortedGreaterThan))
+  }
+
+  def formatResult[A, B, C, D](name: String, x: A, f: A => B): String = {
+    val msg = "The %s of %s is %s."
+    msg.format(name, x.toString, f(x).toString)
+  }
+
   // Here's a polymorphic version of `binarySearch`, parameterized on
   // a function for testing whether an `A` is greater than another `A`.
   def binarySearch[A](as: Array[A], key: A, gt: (A,A) => Boolean): Int = {
@@ -147,7 +157,13 @@ object PolymorphicFunctions {
 
   // Exercise 2: Implement a polymorphic function to check whether
   // an `Array[A]` is sorted
-  def isSorted[A](as: Array[A], gt: (A,A) => Boolean): Boolean = ???
+  def isSorted[A](as: Array[A], gt: (A,A) => Boolean): Boolean = {
+    if(as.length == 1 || as.length == 0) {
+      true
+    } else {
+      gt(as.head, as.tail.head) && isSorted(as.tail, gt)
+    }
+  }
 
   // Polymorphic functions are often so constrained by their type
   // that they only have one implementation! Here's an example:
