@@ -45,6 +45,9 @@ object List { // `List` companion object. Contains functions for creating and wo
       case Cons(h, t) => Cons(h, append(t, a2))
     }
 
+  /*
+    Also, fold right is not tail recursive
+   */
   def foldRight[A, B](as: List[A], z: B)(f: (A, B) => B): B = // Utility functions
     as match {
       case Nil => z
@@ -93,12 +96,17 @@ object List { // `List` companion object. Contains functions for creating and wo
     case Cons(h, t) => Cons(h, init(t))
   }
 
-  /*
-    f(1, f(2, f(3, 4)))
-   */
   def length[A](l: List[A]): Int = foldRight(l, 0)((x, y) => y + 1)
 
-  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = ???
+  /*
+    Fold right: f(1, f(2, f(3, 4)))
+    Fold left: f(f(f(1, 2), 3), 4)
+ */
+  @annotation.tailrec
+  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = l match {
+    case Nil => z
+    case Cons(h, t) => foldLeft(t, f(z, h))(f)
+  }
 
   def map[A,B](l: List[A])(f: A => B): List[B] = ???
 }
