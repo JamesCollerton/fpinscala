@@ -18,7 +18,6 @@ object MyModule {
     println(formatResult("fibonacci sum", 5, fib))
   }
 
-
   // A definition of factorial, using a local, tail recursive function
   def factorial(n: Int): Int = {
     @annotation.tailrec
