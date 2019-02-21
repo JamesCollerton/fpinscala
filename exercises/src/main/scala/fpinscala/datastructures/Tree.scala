@@ -12,17 +12,36 @@ object Tree {
     case b: Branch[A] => size(b.left) + size(b.right) + 1
   }
 
-  def maximum(tree: Tree[Int]): Int = {
-    def maximum(tree: Tree[Int], maxNumber: Option[Int]): Int = tree match {
-      case l: Leaf[Int] => maxNumber.map(x => x max l.value).getOrElse(l.value)
-      case b: Branch[Int] => maximum(b.left, maxNumber) max maximum(b.right, maxNumber)
-    }
-    maximum(tree, Option.empty)
+  def maximum(tree: Tree[Int]): Int = tree match {
+      case l: Leaf[Int] => l.value
+      case b: Branch[Int] => maximum(b.left) max maximum(b.right)
   }
 
   def maximumDepth[A](tree: Tree[A]): Int = tree match {
     case l: Leaf[A] => 1
     case b: Branch[A] => maximumDepth(b.left) max maximumDepth(b.right) + 1
+  }
+
+  def sizeFold(tree: Tree[Int]): Int = {
+    fold(tree)(z => 1, (x, y) => x + y + 1)
+  }
+
+  def maximumFold(tree: Tree[Int]): Int = {
+    fold(tree)(z => z.value, (x, y) => x max y)
+  }
+
+  def maximumDepthFold(tree: Tree[Int]): Int = {
+    fold(tree)(z => 1, (x, y) => x max y + 1)
+  }
+
+  def map[A, B](tree: Tree[A])(f: A => B): Tree[B] = tree match {
+    case l: Leaf[A] => Leaf(f(l.value))
+    case b: Branch[A] => Branch(map(b.left)(f), map(b.right)(f))
+  }
+
+  def fold(tree: Tree[Int])(f: Leaf[Int] => Int, g: (Int, Int) => Int): Int = tree match {
+    case l: Leaf[Int] => f(l)
+    case b: Branch[Int] => g(fold(b.left)(f, g), fold(b.right)(f, g))
   }
 
 }
