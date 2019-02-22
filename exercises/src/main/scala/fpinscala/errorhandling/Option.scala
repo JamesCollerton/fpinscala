@@ -5,7 +5,7 @@ import scala.{Option => _, Some => _, Either => _, _} // hide std library `Optio
 
 sealed trait Option[+A] {
   def map[B](f: A => B): Option[B] = this match {
-    case Some(_) => Option(f(_))
+    case Some(x) => Some(f(x))
     case None => None
   }
 
@@ -15,13 +15,13 @@ sealed trait Option[+A] {
   }
 
   def getOrElse[B>:A](default: => B): B = this match {
-    case Some(_) => _
+    case Some(x) => x
     case None => default
   }
 
   def orElse[B>:A](ob: => Option[B]): Option[B] = this match {
     case None => ob
-    case _ => _
+    case x => x
   }
 
   def filter(f: A => Boolean): Option[A] = this match {
@@ -61,7 +61,7 @@ object Option {
   def lift[A, B](f: A => B): Option[A] => Option[B] = a => a map f
 
   def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = (a, b) match {
-    case (Some(x), Some(y)) => Option(f(x, y))
+    case (Some(x), Some(y)) => Some(f(x, y))
     case _ => None
   }
 
