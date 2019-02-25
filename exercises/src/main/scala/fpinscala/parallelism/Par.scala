@@ -4,6 +4,11 @@ import java.util.concurrent._
 import language.implicitConversions
 
 object Par {
+
+  /*
+    This is a type alias representing ExecutorService => Future[A] as an idea. We can then refer to
+    Par[A] when we just want to refer to ExecutorService => Future[A]
+   */
   type Par[A] = ExecutorService => Future[A]
   
   def run[A](s: ExecutorService)(a: Par[A]): Future[A] = a(s)
