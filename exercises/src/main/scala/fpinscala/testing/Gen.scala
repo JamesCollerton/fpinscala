@@ -14,10 +14,19 @@ shell, which you can fill in and modify while working through the chapter.
 */
 
 trait Prop {
+  // Running a property
+  def check: Boolean = ???
+
+  // Composing a property (remember, can override methods)
+  def &&(p: Prop): Prop = new Prop {
+    override def check: Boolean = this.check && p.check
+  }
+
+  // Creating a property
+  def forAll[A](gen: Gen[A])(f: A => Boolean): Prop = ???
 }
 
 object Prop {
-  def forAll[A](gen: Gen[A])(f: A => Boolean): Prop = ???
 }
 
 object Gen {
