@@ -17,20 +17,25 @@ trait Prop {
   // Running a property
   def check: Boolean = ???
 
-  // Composing a property (remember, can override methods)
+  // Composing a property
   def &&(p: Prop): Prop = new Prop {
     override def check: Boolean = this.check && p.check
   }
 
-  // Creating a property
+  // Creating a property. The property is essentially
   def forAll[A](gen: Gen[A])(f: A => Boolean): Prop = ???
 }
 
 object Prop {
+
 }
 
 object Gen {
+  // This is a lazily evaluated function which takes in a supplier of A
+  // and then returns a Gen
   def unit[A](a: => A): Gen[A] = ???
+
+  def choose(start: Int, stopExclusive: Int): Gen[Int] = ???
 }
 
 trait Gen[A] {
