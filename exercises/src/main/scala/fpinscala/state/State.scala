@@ -14,6 +14,8 @@ package fpinscala.state
 
     Note on the apply method: This is simply what is called when you invoke an object by
     name. WE DON'T USE new AS THIS CREATES AN INSTANCE OF THE CLASS.
+
+    This is the interface for doing the work and contains the state. We call nextInt to advance the state
  */
 trait RNG {
 
@@ -46,17 +48,21 @@ object RNG {
   /*
     Defines a type, Rand is just a function that goes from an RNG
     to a pair of type (A, RNG), giving the next value and the next RNG
+
+    This is essentially a type which represents going from one state to the next, including the result
    */
   type Rand[+A] = RNG => (A, RNG)
 
   /*
     This is shorthand for x => x.nextInt. As Rand: RNG => (A, RNG) and nextInt
     is (Int, RNG) and x is a RNG, this is RNG => (A, RNG)
+
+    Note, this is a reference to a function itself
    */
   val int: Rand[Int] = _.nextInt
 
   /*
-    This unit action passes the RNG along without using it
+    This unit action passes the value along without using it
    */
   def unit[A](a: A): Rand[A] =
     rng => (a, rng)
@@ -64,6 +70,13 @@ object RNG {
   /*
     This map action takes in a Rand, then from that rand gets the next value and
     RNG, then applies the function to the value.
+
+    Remember
+
+    type Rand[+A] = RNG => (A, RNG)
+
+    So this represents something that takes in a state function and then applies a function to it to produce
+    another state function. All of this is done on the functions themselves, no values are actually generated
    */
   def map[A,B](s: Rand[A])(f: A => B): Rand[B] =
     rng => {

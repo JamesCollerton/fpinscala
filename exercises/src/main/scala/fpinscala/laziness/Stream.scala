@@ -10,7 +10,11 @@ trait Stream[+A] {
       f is a function which takes in a value of a and a supplier function of b and then gives a value of b
       The function returns a value of type b
 
+    Because we have
+      case class Cons[+A](h: () => A, t: () => Stream[A]) extends Stream[A]
 
+    Then the head and tail are both lazy, as well as z, meaning that everything is lazily evaluated when the function
+    is called
    */
   def foldRight[B](z: => B)(f: (A, => B) => B): B = // The arrow `=>` in front of the argument type `B` means that the function `f` takes its second argument by name and may choose not to evaluate it.
     this match {
@@ -67,6 +71,9 @@ case object Empty extends Stream[Nothing]
 case class Cons[+A](h: () => A, t: () => Stream[A]) extends Stream[A]
 
 object Stream {
+  /*
+    This is an alternative to Cons which takes in the supplier of head and tail and then lazily evaluates once
+   */
   def cons[A](hd: => A, tl: => Stream[A]): Stream[A] = {
     lazy val head = hd
     lazy val tail = tl
@@ -98,6 +105,11 @@ object Stream {
 
   def constantUnfold(i: Int): Stream[Int] = unfold(i)(j => Some(j, j))
 
+  /*
+    Unfold is:
+      Given a function from stream to an option
+      If this function maps to a successful option then continue to unfold into the stream, otherwise return empty
+   */
   def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] =
     f(z) match {
       case Some((a, s)) => cons(a, unfold(s)(f))
