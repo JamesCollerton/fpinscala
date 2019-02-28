@@ -4,6 +4,14 @@ import fpinscala.laziness.Stream._
 
 trait Stream[+A] {
 
+  /*
+    This is a lazy function
+      z is a supplier function of type B, this is the default value at the start.
+      f is a function which takes in a value of a and a supplier function of b and then gives a value of b
+      The function returns a value of type b
+
+
+   */
   def foldRight[B](z: => B)(f: (A, => B) => B): B = // The arrow `=>` in front of the argument type `B` means that the function `f` takes its second argument by name and may choose not to evaluate it.
     this match {
       case Cons(h, t) => f(h(), t().foldRight(z)(f)) // If `f` doesn't evaluate its second argument, the recursion never occurs.

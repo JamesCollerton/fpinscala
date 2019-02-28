@@ -174,12 +174,20 @@ object PolymorphicFunctions {
 
   // Note that `=>` associates to the right, so we could
   // write the return type as `A => B => C`
+  /*
+    Currying: We return a function that goes from A => B => C so that
+    we can partially apply it.
+   */
   def curry[A,B,C](f: (A, B) => C): A => (B => C) =
     (a: A) => (b: B) => f(a, b)
 
   // NB: The `Function2` trait has a `curried` method already
 
-  // Exercise 4: Implement `uncurry`
+  // Exercise 4: Implement `uncurry
+  /*
+    Uncurrying: We change the function to go from A => B => C to
+    (A, B) => C so we can't partially apply it.
+   */
   def uncurry[A,B,C](f: A => B => C): (A, B) => C =
     (a: A, b: B) => f(a)(b)
 
@@ -194,7 +202,9 @@ object PolymorphicFunctions {
   */
 
   // Exercise 5: Implement `compose`
-
+  /*
+    We have function f: B => C, g: A => B and we want to make h: A => C
+   */
   def compose[A,B,C](f: B => C, g: A => B): A => C =
     (a: A) => f(g(a))
 }

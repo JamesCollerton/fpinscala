@@ -100,8 +100,8 @@ object RNG {
   }
 
   def doubleInt(rng: RNG): ((Double,Int), RNG) = {
-    val((intVal, doubleVal), rng) = intDouble(rng)
-    ((doubleVal, intVal), rng)
+    val((intVal, doubleVal), rngA) = intDouble(rng)
+    ((doubleVal, intVal), rngA)
   }
 
   def double3(rng: RNG): ((Double,Double,Double), RNG) = {
@@ -129,7 +129,7 @@ object RNG {
   def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = {
     rng => {
       val (raa, rngA) = ra(rng)
-      val (rbb, rngB) = rb(rngB)
+      val (rbb, rngB) = rb(rngA)
       (f(raa, rbb), rngB)
     }
   }
@@ -148,10 +148,19 @@ object RNG {
 
     Rand[+A] = RNG => (A, RNG)
 
+    We need to get the value from f, then apply g and return that
+
+    g(nexInt)(nextRng):
+      A => Rand[B]
+      A => RNG => (B, RNG)
+      A => (B, RNG)
+
    */
   def flatMap[A,B](f: Rand[A])(g: A => Rand[B]): Rand[B] = {
-    val (nextInt, nextRng) = f()
-    g(nextInt)
+    rng => {
+      val (nextInt, nextRng) = f(rng)
+      g(nextInt)(nextRng)
+    }
   }
 
   /*
@@ -204,10 +213,15 @@ case class State[S,+A](run: S => (A, S)) {
   def map2[B,C](sb: State[S, B])(f: (A, B) => C): State[S, C] =
     flatMap(a => sb.map(b => f(a,b)))
 
-  def flatMap[B](f: A => State[S, B]): State[S, B] = {
-    val (a, s) = run()
-    f(a)
-  }
+  /*
+    So we have
+      run: S => (A, S)
+      State(run) as a constructor
+
+      f: A => State[S, B]
+
+   */
+  def flatMap[B](f: A => State[S, B]): State[S, B] = ???
 }
 
 object State {
