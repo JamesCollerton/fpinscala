@@ -9,8 +9,11 @@ import Prop._
 import java.util.concurrent.{Executors,ExecutorService}
 
 /*
-The library developed in this chapter goes through several iterations. This file is just the
-shell, which you can fill in and modify while working through the chapter.
+  The library developed in this chapter goes through several iterations. This file is just the
+  shell, which you can fill in and modify while working through the chapter.
+
+  This trait represents a property we would like to check. We can check the property by running the
+  check method.
 */
 
 trait Prop {
@@ -69,13 +72,54 @@ object Gen {
 
   // This is a lazily evaluated function which takes in a supplier of A
   // and then returns a Gen
-  def unit[A](a: => A): Gen[A] = ???
+  def unit[A](a: => A): Gen[A] = Gen(State.unit(a))
+
+  // This is used to generate a boolean
+  def boolean: Gen[Boolean] = Gen(State(rng => RNG.boolean(rng)))
+
+  /*
+    This is used to generate a list of length n of type A using a generator
+
+    So
+      Gen[A](sample: State[RNG,A])
+      State[S,+A](run: S => (A, S))
+
+    Then
+      Gen[List[A]](sample: State[RNG, List[A]])
+      State[S, List[A]](run: S => (List[A], S))
+    */
+  def listOfN[A](n: Int, g: Gen[A]): Gen[List[A]] = ???
+
+//  {
+//    def go(n: Int, gl: Gen[List[A]]): Gen[List[A]] = {
+//      val g.
+//      if(n == 0) gl else g.flatMap(a => )
+//    }
+//
+//    val origList = g.map(a => List(a))
+//  }
 
 }
 
-trait Gen[A] {
+/*
+  Remember that the constructor for state is
+
+    State[S,+A](run: S => (A, S))
+
+  So this is RNG => (RNG, A)
+ */
+case class Gen[A](sample: State[RNG,A]) {
+
+  /*
+    So remember that map takes out the value, applies the function then puts it back into the class
+   */
   def map[A,B](f: A => B): Gen[B] = ???
+
+  /*
+    This
+   */
   def flatMap[A,B](f: A => Gen[B]): Gen[B] = ???
+
 }
 
 trait SGen[+A] {

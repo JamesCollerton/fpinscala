@@ -89,6 +89,11 @@ object RNG {
     if(int < 0) (int, nextRng) else nonNegativeInt(nextRng)
   }
 
+  def boolean(rng: RNG): (Boolean, RNG) = {
+    val (int, nextRng) = nonNegativeInt(rng)
+    (int % 2 == 0, nextRng)
+  }
+
   /*
     Must be between zero and one
    */
